@@ -2,8 +2,8 @@
 # -*- coding: utf-8 -*-
 
 import time
-from KalshiTradingSystem.OrderBook import OrderBook
-from KalshiTradingSystem.Series import market_list, markets
+from OrderBook import OrderBook
+from Series import market_list, markets
 import tabulate
 import asyncio
 from typing import Callable

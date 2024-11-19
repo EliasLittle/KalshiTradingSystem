@@ -108,7 +108,7 @@ class OrderManagementSystem:
 
 
 async def main():
-    from KalshiTradingSystem.KalshiAPI import demo_kalshi_api
+    from KalshiAPI import demo_kalshi_api
     oms = OrderManagementSystem(demo_kalshi_api)
 
     order = Order(

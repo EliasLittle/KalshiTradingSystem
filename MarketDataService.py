@@ -13,9 +13,9 @@ import asyncio
 import signal
 import logging
 from datetime import datetime
-from KalshiTradingSystem.KalshiWebsocketClient import KalshiWebsocketClient
-from KalshiTradingSystem.Series import event_list, market_list
-from KalshiTradingSystem.OrderBook import OrderBook
+from KalshiWebsocketClient import KalshiWebsocketClient
+from Series import event_list, market_list
+from OrderBook import OrderBook
 from typing import Dict, Any, Optional
 import json
 import argparse
