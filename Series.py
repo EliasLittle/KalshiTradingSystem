@@ -1,5 +1,5 @@
 from kalshi_python.models import *
-from KalshiAPI import prod_kalshi_api as kalshi_api
+from KalshiAPI import kalshi_api
 from pprint import pprint
 
 
