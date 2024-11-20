@@ -2,9 +2,17 @@
 
 ## Requirements
 - Python 3.10+
-- pip
 - Kalshi API key (prod and/or demo)
-- Kafka server setup (see [here](https://kafka.apache.org/quickstart) for more information)
+- Running Kafka server (see [here](https://kafka.apache.org/quickstart) for more information)
+    - Assumes default port of 9092
+
+## Installation
+
+To install the required packages, run:
+
+```bash
+pip install -r requirements.txt
+```
 
 ## Using the system
 
@@ -15,6 +23,8 @@ The system will look for the following Kalshi API keys:
 - `KALSHI_PROD_PASSWORD`
 - `KALSHI_DEMO_EMAIL`
 - `KALSHI_DEMO_PASSWORD`
+
+To switch between production and demo environments, change the `kalshi_api` variable in `KalshiAPI.py` to either `prod_kalshi_api` or `demo_kalshi_api`.
 
 There are several services that can be run:
 - `MarketDataService` 
@@ -35,6 +45,7 @@ There are several services that can be run:
         - `strategy` will run the test strategy, which will listen for market data events and send a market order to Kalshi under certain conditions
 - An example of how to run the system is:
     ```bash
-    python run.py --components monitor strategy
+    python run.py --components monitor strategy --ticker POPVOTEMOVSMALLER-24
     ```
     - This will run the market data service, and the market monitor with the test strategy
+- If you don't specify a ticker, the system will not automatically subscribe to markets in `market_list` as defined in `Series.py`
