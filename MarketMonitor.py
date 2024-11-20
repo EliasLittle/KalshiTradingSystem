@@ -3,16 +3,16 @@
 
 import time
 from OrderBook import OrderBook
-from Series import market_list, markets
 import tabulate
 import asyncio
 from typing import Callable
 from collections import Counter
 import logging
+from KalshiAPI import kalshi_api
 
 _active_monitors = Counter()
 
-async def monitor_event(event: str, handler: Callable, logger: logging.Logger, conditional: Callable = lambda: True):
+async def monitor_event(event: str, handler: Callable, logger: logging.Logger, conditional: Callable = lambda x: True):
     """
     Monitor all markets in an event.
 
@@ -25,7 +25,7 @@ async def monitor_event(event: str, handler: Callable, logger: logging.Logger, c
     if not conditional(event):
         return
         
-    market_list = [m.ticker for m in markets[event]]
+    market_list = [m.ticker for m in kalshi_api.get_markets(event_ticker=event).markets]
     logger.info(f"\nEvent {event} markets: {market_list}")
     
     tasks = [
@@ -109,6 +109,7 @@ async def main(logger, args):
     """
     # If no ticker provided, show available markets
     if not args.ticker:
+        from Series import market_list
         print("Available markets:")
         for m in market_list:
             print(f"  {m}")
