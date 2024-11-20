@@ -14,7 +14,6 @@ import signal
 import logging
 from datetime import datetime
 from KalshiWebsocketClient import KalshiWebsocketClient
-from Series import event_list, market_list
 from OrderBook import OrderBook
 from typing import Dict, Any, Optional
 import json
@@ -173,7 +172,7 @@ async def shutdown(signal, loop, client, manager, logger):
     print("Shutdown complete.")
     logger.info("Shutdown complete.")
 
-async def main(logger, args):
+async def main(market_list, logger, args):
     # Get the current event loop
     loop = asyncio.get_running_loop()
     
@@ -231,6 +230,7 @@ async def main(logger, args):
             loop.remove_signal_handler(sig)
 
 if __name__ == "__main__":
+    from Series import market_list
     # Get command line arguments
     parser = argparse.ArgumentParser()
     parser.add_argument('--print', action='store_true', help='Print logs to stdout')
@@ -252,7 +252,7 @@ if __name__ == "__main__":
         logger.addHandler(stream_handler)
 
     try:
-        asyncio.run(main(logger, args))
+        asyncio.run(main(market_list, logger, args))
     except KeyboardInterrupt:
         print("Received keyboard interrupt...")
         logger.info("Received keyboard interrupt...")
