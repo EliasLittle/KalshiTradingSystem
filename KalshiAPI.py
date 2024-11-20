@@ -29,3 +29,8 @@ demo_kalshi_api = kalshi_python.ApiInstance(
     password=demo_password,
     configuration=demo_config,
 )
+
+kalshi_api = prod_kalshi_api
+
+if __name__ == "__main__":
+    prod_kalshi_api.email
