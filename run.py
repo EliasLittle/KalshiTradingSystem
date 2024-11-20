@@ -6,16 +6,18 @@ import logging.config
 import argparse
 from logging_config import LOGGING_CONFIG
 
+from KalshiAPI import kalshi_api
+
 # Import main functions from different modules
 from MarketDataService import main as data_service_main
 from MarketMonitor import main as monitor_main
 from TestStrategy import main as strategy_main
 
-async def run_market_data_system(args):
+async def run_market_data_system(market_list, args):
     """Run the main trading system"""
     logger = logging.getLogger('MarketData')
     try:
-        await data_service_main(logger, args)
+        await data_service_main(market_list, logger, args)
     except Exception as e:
         logger.error(f"Trading system error: {e}", exc_info=True)
 
@@ -31,7 +33,7 @@ async def run_strategies(args):
     """Run the trading strategies"""
     logger = logging.getLogger('Strategies')
     try:
-        await strategy_main(logger)
+        await strategy_main(logger, args)
     except Exception as e:
         logger.error(f"Strategy error: {e}", exc_info=True)
 
@@ -44,7 +46,7 @@ async def main():
                       choices=['monitor', 'strategy'],
                       help='Components to run')
     parser.add_argument('--ticker', type=str,
-                      help='Ticker to monitor')
+                      help='Event Ticker to monitor')
     
     args = parser.parse_args()
 
@@ -56,8 +58,13 @@ async def main():
     
     tasks = []
     
+    if args.ticker:
+        market_list = [m.ticker for m in kalshi_api.get_markets(event_ticker=args.ticker).markets]
+    else:
+        from Series import market_list
+    
     # Always run the market data service
-    tasks.append(run_market_data_system(args))
+    tasks.append(run_market_data_system(market_list, args))
 
     # Create tasks based on selected components
     if 'monitor' in args.components:
@@ -67,6 +74,7 @@ async def main():
     
     if tasks:
         try:
+            print("Running tasks")
             await asyncio.gather(*tasks)
         except KeyboardInterrupt:
             logger.info("Shutting down...")
