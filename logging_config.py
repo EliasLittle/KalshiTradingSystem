@@ -3,6 +3,9 @@ from datetime import datetime
 
 # Create logs directory if it doesn't exist
 os.makedirs('logs', exist_ok=True)
+os.makedirs('logs/market_data', exist_ok=True)
+os.makedirs('logs/monitor', exist_ok=True)
+os.makedirs('logs/strategies', exist_ok=True)
 
 # Generate timestamp for log files
 TIMESTAMP = datetime.now().strftime('%Y%m%d_%H%M%S')
